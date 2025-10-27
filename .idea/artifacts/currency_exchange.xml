@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="currency_exchange">
+    <output-path>$PROJECT_DIR$/out/artifacts/currency_exchange</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Currency_exchange" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.10.1" />
+          <element id="library" level="project" name="Maven: org.xerial:sqlite-jdbc:3.50.3.0" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
