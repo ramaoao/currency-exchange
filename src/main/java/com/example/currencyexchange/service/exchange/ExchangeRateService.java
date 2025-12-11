@@ -1,6 +1,6 @@
 package com.example.currencyexchange.service.exchange;
 
-import com.example.currencyexchange.dao.ExchangeRateDAO;
+import com.example.currencyexchange.repository.ExchangeRateRepository;
 import com.example.currencyexchange.model.entity.Currency;
 import com.example.currencyexchange.model.entity.ExchangeRate;
 import com.example.currencyexchange.model.errors.ExchangeRateAlreadyExistsException;
@@ -13,23 +13,23 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExchangeRateService {
-    private final ExchangeRateDAO exchangeRateDAO;
+    private final ExchangeRateRepository exchangeRateRepository;
     private final CurrencyService currencyService;
 
-    public ExchangeRateService(ExchangeRateDAO exchangeRateDAO, CurrencyService currencyService) {
-        this.exchangeRateDAO = exchangeRateDAO;
+    public ExchangeRateService(ExchangeRateRepository exchangeRateRepository, CurrencyService currencyService) {
+        this.exchangeRateRepository = exchangeRateRepository;
         this.currencyService = currencyService;
     }
 
     public List<ExchangeRate> findAllExchangeRates() throws SQLException {
-        return exchangeRateDAO.findAllExchangeRates();
+        return exchangeRateRepository.findAllExchangeRates();
     }
 
     public ExchangeRate findExchangeRateByCodes(String baseCode, String targetCode) throws SQLException {
         baseCode = baseCode.toUpperCase();
         targetCode = targetCode.toUpperCase();
 
-        Optional<ExchangeRate> exchangeRate = exchangeRateDAO.findExchangeRateByCodes(baseCode, targetCode);
+        Optional<ExchangeRate> exchangeRate = exchangeRateRepository.findExchangeRateByCodes(baseCode, targetCode);
         if (exchangeRate.isEmpty()) {
             throw new ExchangeRateNotFoundException("Currency pair not found: " + baseCode + "/" + targetCode);
         }
@@ -42,13 +42,13 @@ public class ExchangeRateService {
         Currency baseCurrency = currencyService.findCurrencyByCode(baseCode);
         Currency targetCurrency = currencyService.findCurrencyByCode(targetCode);
 
-        Optional<ExchangeRate> currencyPairsFound = exchangeRateDAO.findExchangeRateByCodes(baseCode, targetCode);
+        Optional<ExchangeRate> currencyPairsFound = exchangeRateRepository.findExchangeRateByCodes(baseCode, targetCode);
         if (currencyPairsFound.isPresent()) {
             throw new ExchangeRateAlreadyExistsException("Currency pair already exists: " + baseCode + "/" + targetCode);
         }
 
         ExchangeRate exchangeRate = new ExchangeRate(baseCurrency, targetCurrency, rate);
-        Long id = exchangeRateDAO.addExchangeRate(exchangeRate);
+        Long id = exchangeRateRepository.addExchangeRate(exchangeRate);
         exchangeRate.setId(id);
         return exchangeRate;
     }
@@ -59,7 +59,7 @@ public class ExchangeRateService {
 
         ExchangeRate exchangeRate = findExchangeRateByCodes(baseCode, targetCode);
         exchangeRate.setRate(rate);
-        exchangeRateDAO.updateExchangeRate(exchangeRate);
+        exchangeRateRepository.updateExchangeRate(exchangeRate);
         return exchangeRate;
     }
 }

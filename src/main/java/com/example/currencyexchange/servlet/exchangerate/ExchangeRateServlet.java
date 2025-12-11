@@ -1,6 +1,5 @@
 package com.example.currencyexchange.servlet.exchangerate;
 
-import com.example.currencyexchange.dao.ExchangeRateDAO;
 import com.example.currencyexchange.model.entity.ExchangeRate;
 import com.example.currencyexchange.model.errors.ExchangeRateNotFoundException;
 import com.example.currencyexchange.model.response.ErrorResponse;

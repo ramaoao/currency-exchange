@@ -1,4 +1,4 @@
-package com.example.currencyexchange.dao;
+package com.example.currencyexchange.repository;
 
 import com.example.currencyexchange.model.entity.Currency;
 import com.example.currencyexchange.model.entity.ExchangeRate;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ExchangeRateDAO {
+public class ImplExchangeRateRepository implements ExchangeRateRepository {
     public List<ExchangeRate> findAllExchangeRates() throws SQLException{
         final String query =
                 """
@@ -138,22 +138,22 @@ public class ExchangeRateDAO {
     }
 
     public void updateExchangeRate(ExchangeRate exchangeRate) throws SQLException {
-         final String query =
-                 """
-                 UPDATE exchange_rates
-                 SET base_currency_id = ?, target_currency_id = ?, rate = ?
-                 WHERE id = ?
-                 """;
+        final String query =
+                """
+                UPDATE exchange_rates
+                SET base_currency_id = ?, target_currency_id = ?, rate = ?
+                WHERE id = ?
+                """;
 
-         try (Connection connection = DatabasePreparation.getConnection();
-              PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabasePreparation.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-             statement.setLong (1, exchangeRate.getBaseCurrency().getId());
-             statement.setLong (2, exchangeRate.getTargetCurrency().getId());
-             statement.setBigDecimal(3, exchangeRate.getRate());
-             statement.setLong(4, exchangeRate.getId());
+            statement.setLong (1, exchangeRate.getBaseCurrency().getId());
+            statement.setLong (2, exchangeRate.getTargetCurrency().getId());
+            statement.setBigDecimal(3, exchangeRate.getRate());
+            statement.setLong(4, exchangeRate.getId());
 
-             statement.executeUpdate();
+            statement.executeUpdate();
         }
     }
 

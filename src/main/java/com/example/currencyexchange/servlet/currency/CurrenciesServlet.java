@@ -1,6 +1,6 @@
 package com.example.currencyexchange.servlet.currency;
 
-import com.example.currencyexchange.dao.CurrencyDAO;
+import com.example.currencyexchange.repository.CurrencyRepository;
 import com.example.currencyexchange.model.entity.Currency;
 import com.example.currencyexchange.model.errors.CurrencyAlreadyExistsException;
 import com.example.currencyexchange.model.response.ErrorResponse;
@@ -20,13 +20,13 @@ import static java.util.Currency.getInstance;
 
 @WebServlet(name = "CurrenciesServlet", urlPatterns = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
-    private CurrencyDAO currencyDAO;
+    private CurrencyRepository currencyRepository;
     private CurrencyService currencyService;
     private final Gson gson = new Gson();
 
     @Override
     public void init() {
-        this.currencyDAO = (CurrencyDAO) getServletContext().getAttribute("currencyDAO");
+        this.currencyRepository = (CurrencyRepository) getServletContext().getAttribute("currencyDAO");
         this.currencyService = (CurrencyService) getServletContext().getAttribute("currencyService");
     }
 

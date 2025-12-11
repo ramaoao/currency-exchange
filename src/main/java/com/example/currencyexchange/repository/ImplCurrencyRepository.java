@@ -1,4 +1,4 @@
-package com.example.currencyexchange.dao;
+package com.example.currencyexchange.repository;
 
 import com.example.currencyexchange.model.entity.Currency;
 import com.example.currencyexchange.util.DatabasePreparation;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CurrencyDAO {
+public class ImplCurrencyRepository implements CurrencyRepository {
     public List<Currency> findAllCurrencies() throws SQLException {
         String query = "SELECT * FROM currencies";
 
@@ -18,9 +18,9 @@ public class CurrencyDAO {
              PreparedStatement statement = connectingDataBase.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
-             while (resultSet.next()) {
-                 currencies.add(getCurrency(resultSet));
-             }
+            while (resultSet.next()) {
+                currencies.add(getCurrency(resultSet));
+            }
         }
         return currencies;
     }
@@ -30,7 +30,7 @@ public class CurrencyDAO {
 
         try (Connection connectingDataBase = DatabasePreparation.getConnection();
              PreparedStatement preparedStatement = connectingDataBase.prepareStatement(query)) {
-             preparedStatement.setString(1, code);
+            preparedStatement.setString(1, code);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {

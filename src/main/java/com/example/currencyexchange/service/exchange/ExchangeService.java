@@ -1,6 +1,6 @@
 package com.example.currencyexchange.service.exchange;
 
-import com.example.currencyexchange.dao.ExchangeRateDAO;
+import com.example.currencyexchange.repository.ExchangeRateRepository;
 import com.example.currencyexchange.model.entity.ExchangeRate;
 import com.example.currencyexchange.model.errors.ExchangeRateNotFoundException;
 import com.example.currencyexchange.model.response.ExchangeResponse;
@@ -12,10 +12,10 @@ import java.util.Optional;
 import static java.math.RoundingMode.HALF_EVEN;
 
 public class ExchangeService {
-    private final ExchangeRateDAO exchangeRateDAO;
+    private final ExchangeRateRepository exchangeRateRepository;
 
-    public ExchangeService(ExchangeRateDAO exchangeRateDAO) {
-        this.exchangeRateDAO = exchangeRateDAO;
+    public ExchangeService(ExchangeRateRepository exchangeRateRepository) {
+        this.exchangeRateRepository = exchangeRateRepository;
     }
 
     public ExchangeResponse convertCurrency(String baseCurrency, String targetCurrency, BigDecimal amount) throws SQLException {
@@ -56,11 +56,11 @@ public class ExchangeService {
     }
 
     private Optional<ExchangeRate> getDirectRate(String baseCurrency, String targetCurrency) throws SQLException {
-        return exchangeRateDAO.findExchangeRateByCodes(baseCurrency, targetCurrency);
+        return exchangeRateRepository.findExchangeRateByCodes(baseCurrency, targetCurrency);
     }
 
     private Optional<ExchangeRate> getReverseRate(String baseCurrency, String targetCurrency) throws SQLException {
-        Optional<ExchangeRate> getExchangeRate = exchangeRateDAO.findExchangeRateByCodes(targetCurrency, baseCurrency);
+        Optional<ExchangeRate> getExchangeRate = exchangeRateRepository.findExchangeRateByCodes(targetCurrency, baseCurrency);
 
         if (getExchangeRate.isEmpty()) {
             return Optional.empty();
@@ -80,9 +80,9 @@ public class ExchangeService {
             return Optional.empty();
         }
 
-        Optional<ExchangeRate> usdToBaseOptional = exchangeRateDAO.findExchangeRateByCodes("USD", baseCurrency);
+        Optional<ExchangeRate> usdToBaseOptional = exchangeRateRepository.findExchangeRateByCodes("USD", baseCurrency);
         if (usdToBaseOptional.isEmpty()) {
-            Optional<ExchangeRate> baseToUsdOptional = exchangeRateDAO.findExchangeRateByCodes(baseCurrency, "USD");
+            Optional<ExchangeRate> baseToUsdOptional = exchangeRateRepository.findExchangeRateByCodes(baseCurrency, "USD");
             if (baseToUsdOptional.isEmpty()) {
                 return Optional.empty();
             }
@@ -93,9 +93,9 @@ public class ExchangeService {
             usdToBaseOptional = Optional.of(new ExchangeRate(baseToUsd.getTargetCurrency(), baseToUsd.getBaseCurrency(), inverted));
         }
 
-        Optional<ExchangeRate> usdToTargetOptional = exchangeRateDAO.findExchangeRateByCodes("USD", targetCurrency);
+        Optional<ExchangeRate> usdToTargetOptional = exchangeRateRepository.findExchangeRateByCodes("USD", targetCurrency);
         if (usdToTargetOptional.isEmpty()) {
-            Optional<ExchangeRate> targetToUsdOptional = exchangeRateDAO.findExchangeRateByCodes(targetCurrency, "USD");
+            Optional<ExchangeRate> targetToUsdOptional = exchangeRateRepository.findExchangeRateByCodes(targetCurrency, "USD");
             if (targetToUsdOptional.isEmpty()) {
                 return Optional.empty();
             }
