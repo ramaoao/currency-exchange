@@ -19,8 +19,12 @@ import static jakarta.servlet.http.HttpServletResponse.*;
 
 @WebServlet(name = "ExchangeServiceServlet", urlPatterns = "/exchange")
 public class ExchangeServlet extends HttpServlet {
-    private final ExchangeService exchangeService = new ExchangeService();
+    private ExchangeService exchangeService;
     private final Gson gson = new Gson();
+
+    public void init() {
+        this.exchangeService = (ExchangeService) getServletContext().getAttribute("exchangeService");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

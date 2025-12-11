@@ -13,8 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExchangeRateService {
-    private final ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAO();
-    private final CurrencyService currencyService = new CurrencyService();
+    private final ExchangeRateDAO exchangeRateDAO;
+    private final CurrencyService currencyService;
+
+    public ExchangeRateService(ExchangeRateDAO exchangeRateDAO, CurrencyService currencyService) {
+        this.exchangeRateDAO = exchangeRateDAO;
+        this.currencyService = currencyService;
+    }
 
     public List<ExchangeRate> findAllExchangeRates() throws SQLException {
         return exchangeRateDAO.findAllExchangeRates();

@@ -20,9 +20,12 @@ import static jakarta.servlet.http.HttpServletResponse.*;
 
 @WebServlet(name = "ExchangeRateServlet", urlPatterns = "/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {
-    private final ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAO();
-    private final ExchangeRateService exchangeRateService = new ExchangeRateService();
+    private ExchangeRateService exchangeRateService;
     private final Gson gson = new Gson();
+
+    public void init() {
+        this.exchangeRateService = (ExchangeRateService) getServletContext().getAttribute("exchangeRateService");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

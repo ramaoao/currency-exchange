@@ -20,16 +20,22 @@ import static java.util.Currency.getInstance;
 
 @WebServlet(name = "CurrenciesServlet", urlPatterns = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
-    private final CurrencyDAO currencyDAO = new CurrencyDAO();
-    private final CurrencyService currencyService = new CurrencyService();
+    private CurrencyDAO currencyDAO;
+    private CurrencyService currencyService;
     private final Gson gson = new Gson();
+
+    @Override
+    public void init() {
+        this.currencyDAO = (CurrencyDAO) getServletContext().getAttribute("currencyDAO");
+        this.currencyService = (CurrencyService) getServletContext().getAttribute("currencyService");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json; charset=UTF-8");
 
         try {
-            List<Currency> currencies = currencyDAO.findAllCurrencies();
+            List<Currency> currencies = currencyService.findAllCurrencies();
 
             if (currencies.isEmpty()) {
                 response.setStatus(SC_NOT_FOUND);

@@ -12,7 +12,11 @@ import java.util.Optional;
 import static java.math.RoundingMode.HALF_EVEN;
 
 public class ExchangeService {
-    private final ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAO();
+    private final ExchangeRateDAO exchangeRateDAO;
+
+    public ExchangeService(ExchangeRateDAO exchangeRateDAO) {
+        this.exchangeRateDAO = exchangeRateDAO;
+    }
 
     public ExchangeResponse convertCurrency(String baseCurrency, String targetCurrency, BigDecimal amount) throws SQLException {
         baseCurrency = baseCurrency.toUpperCase();

@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class CurrencyService {
-    private final CurrencyDAO currencyDAO = new CurrencyDAO();
+    private final CurrencyDAO currencyDAO;
+
+    public CurrencyService(CurrencyDAO currencyDAO) {
+        this.currencyDAO = currencyDAO;
+    }
 
     public List<Currency> findAllCurrencies() throws SQLException {
         return currencyDAO.findAllCurrencies();

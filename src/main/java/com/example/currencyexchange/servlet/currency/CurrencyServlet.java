@@ -18,8 +18,13 @@ import static jakarta.servlet.http.HttpServletResponse.*;
 
 @WebServlet(name = "CurrencyServlet", urlPatterns = "/currency/*")
 public class CurrencyServlet extends HttpServlet {
-    private final CurrencyService currencyService = new CurrencyService();
+    private CurrencyService currencyService;
     private final Gson gson = new Gson();
+
+    @Override
+    public void init() {
+        this.currencyService = (CurrencyService) getServletContext().getAttribute("currencyService");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

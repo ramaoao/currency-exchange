@@ -5,6 +5,6 @@
          version="6.0">
   <display-name>Archetype Created Web Application</display-name>
   <listener>
-    <listener-class>com.example.currencyexchange.util.DatabaseInitializer</listener-class>
+    <listener-class>com.example.currencyexchange.util.AppInitializer</listener-class>
   </listener>
 </web-app>

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabasePreparation {
-    private static final String DB_URL = "jdbc:sqlite:/var/lib/currency_exchange/currency.db";
+    private static final String DB_URL = "jdbc:sqlite:currency_exchange.db";
 
     static {
         try {
